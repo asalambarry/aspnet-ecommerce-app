@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ShopZone.Models
 {
     public class OrderItem
@@ -8,7 +10,7 @@ namespace ShopZone.Models
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
 
-        public Order Order { get; set; }
-        public Product Product { get; set; }
+        public Order? Order { get; set; }
+        public Product? Product { get; set; }
     }
 }

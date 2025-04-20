@@ -1,16 +1,25 @@
-namespace ShopZone.Models{
+using System.ComponentModel.DataAnnotations;
 
-    public class Product{
+namespace ShopZone.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
 
-        public int Id{get; set;}
-        public string Name{get; set;}
-        public string Description{get; set;}
-        public decimal Price{get; set;}
-        public string ImageUrl{get; set;}
-        public int Stock{get; set;}
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        public int CategoryId{get; set;}
-        // chaque produit appartient à une seule catégorie(relation plusieurs-à-un)
-        public Category Category{get; set;}
+        [Required]
+        public string Description { get; set; } = string.Empty;
+
+        public decimal Price { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; } = string.Empty;
+
+        public int Stock { get; set; }
+
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
     }
 }

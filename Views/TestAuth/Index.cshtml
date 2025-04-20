@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Test Auth";
+}
+
+<h1>Test Authentication</h1>
+<p>This page is accessible to everyone</p>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <p>You are logged in as: @User.Identity.Name</p>
+    <p>Roles:</p>
+    <ul>
+        @if (User.IsInRole("Admin"))
+        {
+            <li>Admin</li>
+        }
+        @if (User.IsInRole("Client"))
+        {
+            <li>Client</li>
+        }
+    </ul>
+}
+else
+{
+    <p>You are not logged in</p>
+}
