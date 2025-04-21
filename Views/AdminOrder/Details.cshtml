@@ -1,0 +1,95 @@
+@model Order
+@{
+    ViewData["Title"] = $"Order #{Model.Id} Details";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Orders</a></li>
+            <li class="breadcrumb-item active">Order #@Model.Id</li>
+        </ol>
+    </nav>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Order Items</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <div class="d-flex align-items-center mb-3">
+                            @if (item.Product.Images.Any())
+                            {
+                                <img src="@item.Product.Images.First().ImageUrl"
+                                     class="me-3" style="width: 64px; height: 64px; object-fit: cover;">
+                            }
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">@item.Product.Name</h6>
+                                <small class="text-muted">
+                                    Quantity: @item.Quantity x $@item.Price.ToString("F2")
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0">$@((item.Quantity * item.Price).ToString("F2"))</h6>
+                            </div>
+                        </div>
+                    }
+                    <hr>
+                    <div class="text-end">
+                        <h5>Total: $@Model.Total.ToString("F2")</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Order Status</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateStatus" method="post">
+                        <input type="hidden" name="id" value="@Model.Id">
+                        <div class="mb-3">
+                            <label class="form-label">Current Status</label>
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                @foreach (var status in ViewBag.Statuses)
+                                {
+                                    <option value="@status" selected="@(status == Model.Status)">
+                                        @status
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Customer Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> @Model.CustomerName</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                    <p><strong>Address:</strong><br>
+                        @Model.Address<br>
+                        @Model.City, @Model.PostalCode
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
