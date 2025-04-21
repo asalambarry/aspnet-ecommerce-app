@@ -23,6 +23,13 @@ builder.Services.AddScoped<IIdentityEvents, CustomIdentityEvents>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();  // Add this line if not present
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Initialiser les rôles et l'admin
@@ -48,6 +55,8 @@ app.UseRouting();
 
 app.UseAuthentication(); // Ajoutez cette ligne
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
