@@ -1,0 +1,57 @@
+@model ShopZone.Models.Product
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @if (Model.Images != null && Model.Images.Any())
+                    {
+                        var first = true;
+                        foreach (var image in Model.Images)
+                        {
+                            <div class="carousel-item @(first ? "active" : "")">
+                                <img src="@image.ImageUrl" class="d-block w-100" alt="@Model.Name">
+                            </div>
+                            first = false;
+                        }
+                    }
+                </div>
+                @if (Model.Images != null && Model.Images.Count > 1)
+                {
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Catalog">Catalog</a></li>
+                    <li class="breadcrumb-item active">@Model.Name</li>
+                </ol>
+            </nav>
+            <h1 class="mb-3">@Model.Name</h1>
+            <p class="text-muted">Category: @Model.Category?.Name</p>
+            <p class="h2 text-primary mb-4">$@Model.Price.ToString("F2")</p>
+            <p class="mb-4">@Model.Description</p>
+            <div class="d-flex align-items-center mb-4">
+                <span class="badge bg-@(Model.Stock > 0 ? "success" : "danger") me-2">
+                    @(Model.Stock > 0 ? "In Stock" : "Out of Stock")
+                </span>
+                <small class="text-muted">@Model.Stock items available</small>
+            </div>
+        </div>
+    </div>
+</div>

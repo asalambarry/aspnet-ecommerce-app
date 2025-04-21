@@ -1,0 +1,57 @@
+@model IEnumerable<ShopZone.Models.Product>
+
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar with filters -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Filters</h5>
+                    <form asp-action="Catalog" method="get">
+                        <div class="mb-3">
+                            <label class="form-label">Search</label>
+                            <input type="text" name="searchString" class="form-control"
+                                   value="@ViewBag.SearchString" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-select" asp-items="@(new SelectList(ViewBag.Categories, "Name", "Name", ViewBag.CurrentCategory))">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product grid -->
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name"
+                                     style="height: 200px; object-fit: cover;">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text text-muted">@product.Category?.Name</p>
+                                <p class="h4 text-primary mb-3">$@product.Price.ToString("F2")</p>
+                                <a asp-action="Details" asp-route-id="@product.Id"
+                                   class="btn btn-outline-primary w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
