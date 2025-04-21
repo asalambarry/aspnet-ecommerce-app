@@ -1,0 +1,62 @@
+@model Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Order #@Model.Id</h4>
+                <span>@Model.OrderDate.ToString("MMM dd, yyyy HH:mm")</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (item.Product.Images.Any())
+                                        {
+                                            <img src="@item.Product.Images.First().ImageUrl"
+                                                 class="me-3" style="width: 50px; height: 50px; object-fit: cover;" />
+                                        }
+                                        <div>
+                                            <h6 class="mb-0">@item.Product.Name</h6>
+                                            <small class="text-muted">@item.Product.Category?.Name</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-end">$@item.Price.ToString("F2")</td>
+                                <td class="text-end">$@((item.Quantity * item.Price).ToString("F2"))</td>
+                            </tr>
+                        }
+                        <tr class="table-light">
+                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                            <td class="text-end"><strong>$@Model.Total.ToString("F2")</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="MyOrders" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to My Orders
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,3 @@
-cshtml
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<IdentityUser> SignInManager
@@ -9,6 +8,16 @@ cshtml
 {
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Order" asp-action="MyOrders">
+            <i class="bi bi-box-seam"></i> My Orders
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">
+            <i class="bi bi-cart3"></i> Cart
+        </a>
     </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

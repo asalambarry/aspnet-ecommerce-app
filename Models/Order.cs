@@ -9,12 +9,29 @@ namespace ShopZone.Models
         [Required]
         public string UserId { get; set; } = string.Empty;
 
-        public DateTime OrderDate { get; set; }
-        public decimal TotalAmount { get; set; }
+        [Required]
+        public string CustomerName { get; set; } = string.Empty;
 
         [Required]
-        public string Status { get; set; } = string.Empty;
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
-        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        [Required]
+        public string Phone { get; set; } = string.Empty;
+
+        [Required]
+        public string Address { get; set; } = string.Empty;
+
+        [Required]
+        public string City { get; set; } = string.Empty;
+
+        [Required]
+        public string PostalCode { get; set; } = string.Empty;
+
+        public DateTime OrderDate { get; set; }
+        public decimal Total { get; set; }
+        public string Status { get; set; } = "Pending";
+
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

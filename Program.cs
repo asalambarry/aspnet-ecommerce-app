@@ -23,6 +23,8 @@ builder.Services.AddScoped<IIdentityEvents, CustomIdentityEvents>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();  // Add this line if not present
 
+// Add session support
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -56,6 +58,7 @@ app.UseRouting();
 app.UseAuthentication(); // Ajoutez cette ligne
 app.UseAuthorization();
 
+// Use session middleware
 app.UseSession();
 
 app.MapControllerRoute(

@@ -84,9 +84,18 @@
                         <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> Continue Shopping
                         </a>
-                        <a href="#" class="btn btn-primary ms-2">
-                            <i class="bi bi-credit-card"></i> Checkout
-                        </a>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-success ms-2">
+                                <i class="bi bi-check-circle"></i> Place Order
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary ms-2">
+                                <i class="bi bi-person"></i> Login to Order
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
