@@ -1,0 +1,84 @@
+@page
+@using ShopZone.Areas.Identity.Pages.Account
+@model LoginModel
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle"></i> Welcome Back
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password" class="form-label">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label class="form-check-label" asp-for="Input.RememberMe">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign in
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <div class="small mb-2">
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">
+                                    <i class="bi bi-person-plus"></i> Create new account
+                                </a>
+                            </div>
+                            <div class="small">
+                                <a id="forgot-password" asp-page="./ForgotPassword">
+                                    <i class="bi bi-key"></i> Forgot your password?
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <div class="small">
+                        Need help? Contact support
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Animation à l'entrée
+            $('.card').addClass('animate__animated animate__fadeIn');
+
+            // Effet hover sur les boutons
+            $('.btn').hover(
+                function() { $(this).addClass('shadow-sm'); },
+                function() { $(this).removeClass('shadow-sm'); }
+            );
+        });
+    </script>
+}

@@ -9,19 +9,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
-builder.Services.AddDefaultIdentity<IdentityUser>(options => {
-    options.SignIn.RequireConfirmedAccount = true;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 8;
-    options.Password.RequireNonAlphanumeric = true;
-})
+builder.Services
+    .AddDefaultIdentity<IdentityUser>(options => {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = true;
+
+        // Configuration du verrouillage
+        options.Lockout.AllowedForNewUsers = true;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(365 * 100); // Verrouillage très long
+        options.Lockout.MaxFailedAccessAttempts = 5;
+    })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IIdentityEvents, CustomIdentityEvents>();
+builder.Services.AddScoped<RoleService>();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();  // Add this line if not present
+builder.Services.AddRazorPages()
+    .AddRazorPagesOptions(options =>
+    {
+        options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+        options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+    });
 
 // Add session support
 builder.Services.AddDistributedMemoryCache();

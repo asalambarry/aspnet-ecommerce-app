@@ -1,0 +1,116 @@
+@using ShopZone.ViewModels
+@model IEnumerable<UserManagementViewModel>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="container mt-4">
+    <h2>User Management</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>@user.UserName</td>
+                                <td>
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <span class="badge bg-primary">@role</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.IsLocked)
+                                    {
+                                        <span class="badge bg-danger">Locked</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!user.Roles.Contains("Admin"))
+                                    {
+                                        <button type="button"
+                                                class="btn btn-@(user.IsLocked ? "success" : "warning") btn-sm"
+                                                onclick="confirmLockToggle('@user.Id', '@user.Email', @user.IsLocked.ToString().ToLower())">
+                                            <i class="bi bi-@(user.IsLocked ? "unlock" : "lock")"></i>
+                                            @(user.IsLocked ? "Unlock" : "Lock") User
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div class="modal fade" id="lockConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to <span id="actionText"></span> user <strong><span id="userEmail"></span></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="ToggleUserLock" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="userId" name="userId" />
+                    <button type="submit" class="btn btn-warning">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmLockToggle(userId, email, isLocked) {
+            document.getElementById('userId').value = userId;
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('actionText').textContent = isLocked ? 'unlock' : 'lock';
+
+            const modal = new bootstrap.Modal(document.getElementById('lockConfirmModal'));
+            modal.show();
+        }
+    </script>
+}

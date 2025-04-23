@@ -5,36 +5,40 @@ namespace ShopZone.Data
 {
     public static class DbSeeder
     {
-        public static async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
+        public static async Task SeedRolesAndAdminAsync(IServiceProvider services)
         {
-            using (var scope = serviceProvider.CreateScope())
+            using var scope = services.CreateScope();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            // Création des rôles
+            string[] roleNames = { "Admin", "User" };
+            foreach (var roleName in roleNames)
             {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                // Création des rôles
-                string[] roleNames = { "Admin", "Client" };
-                foreach (var roleName in roleNames)
+                var roleExists = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
                 {
-                    var roleExist = await roleManager.RoleExistsAsync(roleName);
-                    if (!roleExist)
-                    {
-                        await roleManager.CreateAsync(new IdentityRole(roleName));
-                    }
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
+            }
 
-                // Création de l'admin
-                var adminUser = new IdentityUser
+            // Création de l'admin si nécessaire
+            var adminEmail = "admin@shopzone.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+            if (adminUser == null)
+            {
+                var admin = new IdentityUser
                 {
-                    UserName = "admin@shopzone.com",
-                    Email = "admin@shopzone.com",
+                    UserName = adminEmail,
+                    Email = adminEmail,
                     EmailConfirmed = true
                 };
 
-                if (await userManager.FindByEmailAsync(adminUser.Email) == null)
+                var result = await userManager.CreateAsync(admin, "Admin123!");
+                if (result.Succeeded)
                 {
-                    await userManager.CreateAsync(adminUser, "Admin@123");
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    await userManager.AddToRoleAsync(admin, "Admin");
                 }
             }
         }
