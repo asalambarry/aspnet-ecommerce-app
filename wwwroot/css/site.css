@@ -115,7 +115,8 @@ body {
 /* Cards styling */
 
 .card {
-    transition: all 0.3s ease;
+    transition: transform 0.2s;
+    margin-bottom: 1rem;
     border: none;
     border-radius: 15px;
 }
@@ -123,6 +124,10 @@ body {
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-body {
+    padding: 1.5rem;
 }
 
 .card-img-top {
@@ -263,4 +268,69 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary-color);
+}
+
+
+/* Table styling */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+
+/* Dashboard styling */
+
+.dashboard-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-stats {
+    padding: 1.5rem;
+    border-radius: 15px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.dashboard-stats.primary {
+    background: linear-gradient(45deg, var(--primary-color), #4aa3df);
+}
+
+.dashboard-stats.success {
+    background: linear-gradient(45deg, var(--secondary-color), #27ae60);
+}
+
+.dashboard-stats.info {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+}
+
+.dashboard-stats.warning {
+    background: linear-gradient(45deg, #f1c40f, #f39c12);
+}
+
+.dashboard-chart {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-table {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }

@@ -300,6 +300,9 @@ namespace ShopZone.Migrations
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");

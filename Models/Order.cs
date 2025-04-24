@@ -28,10 +28,11 @@ namespace ShopZone.Models
         [Required]
         public string PostalCode { get; set; } = string.Empty;
 
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal Total { get; set; }
+        public decimal TotalAmount { get; set; }
         public string Status { get; set; } = "Pending";
 
-        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
